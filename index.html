@@ -3,176 +3,578 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>II. Dünya Savaşı | İnsanlık Tarihinin En Büyük Çatışması</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>WW2Archive — II. Dünya Savaşı Ansiklopedisi & İnteraktif Arşiv</title>
+    <meta name="description" content="1939-1945 II. Dünya Savaşı interaktif haritası, kronolojik zaman çizelgesi, muharebeleri, liderleri, medya arşivi ve tarihi belgeleri.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet CSS for Interactive Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Favicon (SVG) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
 </head>
-<body>
+<body class="dark-theme">
 
-    <!-- Header / Navigation -->
-    <header id="navbar">
-        <div class="container nav-container">
-            <a href="#" class="logo">Tarihin İzleri</a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#nedenler">Nedenler</a></li>
-                    <li><a href="#cepheler">Cepheler</a></li>
-                    <li><a href="#liderler">Liderler</a></li>
-                    <li><a href="#sonuclar">Sonuçlar</a></li>
+    <!-- Top Notice / Shortcut Bar -->
+    <div class="top-announcement">
+        <div class="container announcement-content">
+            <span><i class="fas fa-landmark"></i> <strong>WW2Archive:</strong> 1939 – 1945 İnsanlık Tarihinin En Büyük Çatışma Arşivi</span>
+            <div class="top-actions">
+                <span class="shortcut-tip"><kbd>Ctrl</kbd> + <kbd>K</kbd> Hızlı Arama</span>
+                <button id="lang-toggle-btn" class="badge-pill"><i class="fas fa-globe"></i> TR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header id="main-header">
+        <div class="container nav-wrap">
+            <a href="#" class="brand-logo">
+                <span class="logo-shield"><i class="fas fa-shield-halved"></i></span>
+                <div class="logo-text">
+                    <span class="logo-title">WW2<span class="highlight">ARCHIVE</span></span>
+                    <span class="logo-sub">İkinci Dünya Savaşı Ansiklopedisi</span>
+                </div>
+            </a>
+
+            <nav id="navbar">
+                <ul class="nav-menu">
+                    <li><a href="#harita" class="nav-link"><i class="fas fa-map-location-dot"></i> Harita</a></li>
+                    <li><a href="#zaman-cizelgesi" class="nav-link"><i class="fas fa-timeline"></i> Zaman Çizelgesi</a></li>
+                    <li><a href="#muharebeler" class="nav-link"><i class="fas fa-crosshairs"></i> Muharebeler</a></li>
+                    <li><a href="#kisiler" class="nav-link"><i class="fas fa-user-tie"></i> Kişiler</a></li>
+                    <li><a href="#ulkeler" class="nav-link"><i class="fas fa-flag"></i> Ülkeler</a></li>
+                    <li><a href="#medya" class="nav-link"><i class="fas fa-photo-film"></i> Medya</a></li>
+                    <li><a href="#konular" class="nav-link"><i class="fas fa-book-open"></i> Konular</a></li>
+                    <li><a href="#yorumlar" class="nav-link"><i class="fas fa-comments"></i> Yorumlar</a></li>
                 </ul>
             </nav>
-            <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+
+            <div class="nav-right">
+                <button id="search-trigger-btn" class="icon-btn" title="Arama Yap (Ctrl+K)">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="admin-trigger-btn" class="admin-badge-btn" title="Yönetim Paneli (CMS)">
+                    <i class="fas fa-sliders"></i> <span>CMS</span>
+                </button>
+                <button class="mobile-toggle-btn" id="mobile-menu-toggle" aria-label="Menüyü Aç">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1>II. Dünya Savaşı</h1>
-            <p>1939 - 1945 yılları arasında dünyayı sarsan, milyonlarca insanın hayatını değiştiren küresel yıkım.</p>
-            <a href="#nedenler" class="btn btn-primary">Tarihe Yolculuk <i class="fas fa-arrow-down"></i></a>
-        </div>
-    </section>
-
-    <!-- Causes Section -->
-    <section id="nedenler" class="section causes">
-        <div class="container">
-            <h2 class="section-title">Savaşın Nedenleri</h2>
-            <div class="grid-3">
-                <div class="card fade-in">
-                    <i class="fas fa-file-contract card-icon"></i>
-                    <h3>Versay Antlaşması</h3>
-                    <p>I. Dünya Savaşı'nın ardından Almanya'ya dayatılan ağır şartlar, ekonomik çöküş ve intikam duygusunu körükledi.</p>
-                </div>
-                <div class="card fade-in">
-                    <i class="fas fa-fist-raised card-icon"></i>
-                    <h3>Faşizmin Yükselişi</h3>
-                    <p>İtalya'da Mussolini ve Almanya'da Hitler'in kurduğu totaliter rejimler, saldırgan ve yayılmacı politikalar izledi.</p>
-                </div>
-                <div class="card fade-in">
-                    <i class="fas fa-globe-asia card-icon"></i>
-                    <h3>Emperyalist Hedefler</h3>
-                    <p>Japonya'nın Asya'daki yayılmacı politikası ve Almanya'nın "Hayat Sahası" (Lebensraum) arayışı gerilimi tırmandırdı.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Fronts Section -->
-    <section id="cepheler" class="section fronts bg-dark">
-        <div class="container">
-            <h2 class="section-title text-light">Önemli Cepheler</h2>
-            <div class="timeline">
-                <div class="timeline-item fade-in-left">
-                    <div class="timeline-content">
-                        <h3>Avrupa Cephesi</h3>
-                        <p>Almanya'nın Polonya'yı işgaliyle başlayan bu cephe, Fransa'nın düşüşü, Britanya Savaşı ve nihayetinde Normandiya Çıkarması ile müttefiklerin zaferiyle sonuçlandı.</p>
-                    </div>
-                </div>
-                <div class="timeline-item fade-in-right">
-                    <div class="timeline-content">
-                        <h3>Doğu Cephesi</h3>
-                        <p>Almanya ile Sovyetler Birliği arasındaki acımasız mücadele. Stalingrad Muharebesi, savaşın dönüm noktalarından biri oldu ve Alman ordusunun çöküşünü başlattı.</p>
-                    </div>
-                </div>
-                <div class="timeline-item fade-in-left">
-                    <div class="timeline-content">
-                        <h3>Pasifik Cephesi</h3>
-                        <p>Japonya'nın Pearl Harbor saldırısı ile ABD'nin savaşa girdiği cephedir. Midway Muharebesi ve Hiroşima ile Nagazaki'ye atılan atom bombalarıyla son bulmuştur.</p>
-                    </div>
-                </div>
-                <div class="timeline-item fade-in-right">
-                    <div class="timeline-content">
-                        <h3>Kuzey Afrika Cephesi</h3>
-                        <p>Müttefik ve Mihver devletlerinin çöl fırtınaları arasında, Süveyş Kanalı ve petrol rezervlerinin kontrolü için verdiği stratejik savaşlar.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Leaders Section -->
-    <section id="liderler" class="section leaders">
-        <div class="container">
-            <h2 class="section-title">Dönemin Kilit İsimleri</h2>
-            <p class="section-subtitle">Savaşın gidişatını belirleyen Müttefik ve Mihver devletleri liderleri.</p>
+    <section class="hero-section">
+        <div class="hero-bg-overlay"></div>
+        <div class="container hero-container">
+            <div class="hero-badge"><i class="fas fa-certificate"></i> Belgesel & Akademik Dijital Arşiv</div>
+            <h1 class="hero-headline">1939 – 1945<br><span class="hero-title-main">II. DÜNYA SAVAŞI</span></h1>
+            <p class="hero-desc">
+                70 milyondan fazla insanın yaşamını yitirdiği, dünya sınırlarını ve jeopolitiğini baştan yazan küresel çatışmayı; 
+                interaktif cephe haritaları, kronolojik olaylar, kritik muharebeler ve biyografilerle keşfedin.
+            </p>
             
-            <div class="leaders-grid">
-                <!-- Müttefikler -->
-                <div class="leader-card müttefik fade-in">
-                    <div class="leader-info">
-                        <h3>Winston Churchill</h3>
-                        <span class="role">Birleşik Krallık Başbakanı</span>
-                    </div>
+            <div class="hero-buttons">
+                <a href="#harita" class="btn btn-primary"><i class="fas fa-map-marked-alt"></i> İnteraktif Harita</a>
+                <a href="#zaman-cizelgesi" class="btn btn-outline"><i class="fas fa-stream"></i> Kronolojik Çizelge</a>
+                <button id="hero-search-btn" class="btn btn-glass"><i class="fas fa-search"></i> Arşivde Ara</button>
+            </div>
+
+            <!-- Live Key Stats Bar -->
+            <div class="stats-card-grid">
+                <div class="stat-box">
+                    <span class="stat-number">70M - 85M</span>
+                    <span class="stat-label"><i class="fas fa-skull"></i> Tahmini Can Kaybı</span>
                 </div>
-                <div class="leader-card müttefik fade-in">
-                    <div class="leader-info">
-                        <h3>Franklin D. Roosevelt</h3>
-                        <span class="role">ABD Başkanı</span>
-                    </div>
+                <div class="stat-box">
+                    <span class="stat-number">6 Yıl 1 Gün</span>
+                    <span class="stat-label"><i class="fas fa-clock"></i> Savaşın Süresi</span>
                 </div>
-                <div class="leader-card müttefik fade-in">
-                    <div class="leader-info">
-                        <h3>Joseph Stalin</h3>
-                        <span class="role">Sovyetler Birliği Lideri</span>
-                    </div>
+                <div class="stat-box">
+                    <span class="stat-number">30+</span>
+                    <span class="stat-label"><i class="fas fa-globe-americas"></i> Katılan Ülke</span>
                 </div>
-                <!-- Mihver -->
-                <div class="leader-card mihver fade-in">
-                    <div class="leader-info">
-                        <h3>Adolf Hitler</h3>
-                        <span class="role">Almanya Führer'i</span>
-                    </div>
-                </div>
-                <div class="leader-card mihver fade-in">
-                    <div class="leader-info">
-                        <h3>Benito Mussolini</h3>
-                        <span class="role">İtalya Başbakanı</span>
-                    </div>
-                </div>
-                <div class="leader-card mihver fade-in">
-                    <div class="leader-info">
-                        <h3>Hirohito</h3>
-                        <span class="role">Japonya İmparatoru</span>
-                    </div>
+                <div class="stat-box">
+                    <span class="stat-number">4 Ana Cephe</span>
+                    <span class="stat-label"><i class="fas fa-chess"></i> Küresel Harekât</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Consequences Section -->
-    <section id="sonuclar" class="section results bg-dark">
+    <!-- SECTION 1: İnteraktif Harita (Interactive Leaflet Map) -->
+    <section id="harita" class="section-container">
         <div class="container">
-            <h2 class="section-title text-light">Savaşın Sonuçları ve Mirası</h2>
-            <div class="results-content">
-                <div class="result-text fade-in-left">
-                    <ul>
-                        <li><i class="fas fa-check-circle"></i> <strong>Birleşmiş Milletler:</strong> Milletler Cemiyeti'nin başarısızlığı üzerine, küresel barışı sağlamak amacıyla BM kuruldu.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Soğuk Savaş:</strong> ABD ve Sovyetler Birliği süper güçler olarak ortaya çıktı, dünya iki kutuplu bir döneme girdi.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>İnsan Kaybı:</strong> Yaklaşık 70-85 milyon insan hayatını kaybetti, tarihin en kanlı savaşı olarak kayıtlara geçti.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Avrupa'nın Bölünmesi:</strong> Almanya doğu ve batı olmak üzere ikiye bölündü, "Demir Perde" Avrupa'yı ikiye ayırdı.</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Nükleer Çağ:</strong> İlk kez atom bombalarının kullanılmasıyla nükleer silahlanma yarışı başladı.</li>
-                    </ul>
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-satellite"></i> Jeopolitik Görünüm</span>
+                <h2 class="section-title">İnteraktif Cephe ve Muharebe Haritası</h2>
+                <p class="section-intro">
+                    Dünya genelindeki kritik çatışma noktalarını, çıkarma bölgelerini ve stratejik hava/deniz üslerini harita üzerinde inceleyin. 
+                    İşaretçilere tıklayarak detaylı zayiat ve komutan bilgilerine ulaşabilirsiniz.
+                </p>
+            </div>
+
+            <!-- Map Filter Bar -->
+            <div class="filter-pills-bar" id="map-filters">
+                <button class="filter-pill active" data-front="all"><i class="fas fa-earth-europe"></i> Tüm Bölgeler</button>
+                <button class="filter-pill" data-front="avrupa"><i class="fas fa-flag"></i> Batı / Avrupa Cephesi</button>
+                <button class="filter-pill" data-front="dogu"><i class="fas fa-crosshairs"></i> Doğu Cephesi (Sovyet)</button>
+                <button class="filter-pill" data-front="pasifik"><i class="fas fa-ship"></i> Pasifik Okyanusu</button>
+                <button class="filter-pill" data-front="afrika"><i class="fas fa-sun"></i> Kuzey Afrika & Akdeniz</button>
+            </div>
+
+            <div class="map-wrapper">
+                <div id="leaflet-map"></div>
+                <div class="map-legend-box">
+                    <h4><i class="fas fa-layer-group"></i> Harita Lejantı</h4>
+                    <div class="legend-item"><span class="legend-dot marker-red"></span> Kritik Muharebe / Dönüm Noktası</div>
+                    <div class="legend-item"><span class="legend-dot marker-blue"></span> Amfibi Çıkarma / Deniz Harekâtı</div>
+                    <div class="legend-item"><span class="legend-dot marker-gold"></span> Nükleer / Tarihi Zirve</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-content">
-            <p>&copy; 2026 Tarihin İzleri. Eğitim amaçlı hazırlanmıştır.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+    <!-- SECTION 2: Kronolojik Zaman Çizelgesi (Timeline) -->
+    <section id="zaman-cizelgesi" class="section-container bg-subtle">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-calendar-alt"></i> Kronoloji</span>
+                <h2 class="section-title">1939 - 1945 Zaman Çizelgesi</h2>
+                <p class="section-intro">
+                    Savaşın fitilini ateşleyen Polonya işgalinden Tokyo Körfezi'ndeki teslim antlaşmasına kadar tüm kırılma anlarını yıla göre filtreleyin.
+                </p>
+            </div>
+
+            <!-- Year Filter Navigation -->
+            <div class="year-filter-wrapper" id="timeline-years">
+                <button class="year-btn active" data-year="all">Tümü (1939-1945)</button>
+                <button class="year-btn" data-year="1939">1939</button>
+                <button class="year-btn" data-year="1940">1940</button>
+                <button class="year-btn" data-year="1941">1941</button>
+                <button class="year-btn" data-year="1942">1942</button>
+                <button class="year-btn" data-year="1943">1943</button>
+                <button class="year-btn" data-year="1944">1944</button>
+                <button class="year-btn" data-year="1945">1945</button>
+            </div>
+
+            <!-- Timeline Cards Container -->
+            <div class="modern-timeline" id="timeline-container">
+                <!-- Dynamically rendered via script.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: Muharebeler Kataloğu (Battles) -->
+    <section id="muharebeler" class="section-container">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-bomb"></i> Büyük Çatışmalar</span>
+                <h2 class="section-title">Kritik Muharebeler & Harekâtlar</h2>
+                <p class="section-intro">
+                    Savaşın seyrini belirleyen askeri harekâtları, tarafları, komutanları ve zayiat bilançolarını inceleyin.
+                </p>
+            </div>
+
+            <div class="battles-grid" id="battles-container">
+                <!-- Battles rendered via script.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: Kişiler & Biyografiler (People) -->
+    <section id="kisiler" class="section-container bg-subtle">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-users"></i> Biyografi Arşivi</span>
+                <h2 class="section-title">Liderler, Komutanlar ve Sivil Figürler</h2>
+                <p class="section-intro">
+                    Dünya tarihine yön veren devlet başkanları, dahi askeri stratejistler ve nükleer çağın bilim insanları.
+                </p>
+            </div>
+
+            <div class="filter-pills-bar" id="people-filters">
+                <button class="filter-pill active" data-cat="all">Tüm Figürler</button>
+                <button class="filter-pill" data-cat="allies"><i class="fas fa-handshake"></i> Müttefik Liderleri</button>
+                <button class="filter-pill" data-cat="axis"><i class="fas fa-crosshairs"></i> Mihver Liderleri</button>
+                <button class="filter-pill" data-cat="commander"><i class="fas fa-medal"></i> Askeri Komutanlar</button>
+                <button class="filter-pill" data-cat="civilian"><i class="fas fa-atom"></i> Bilim & Sivil</button>
+            </div>
+
+            <div class="people-grid" id="people-container">
+                <!-- People rendered via script.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: Ülkeler & İttifak Blokları (Countries) -->
+    <section id="ulkeler" class="section-container">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-handshake-angle"></i> İttifak Dengeleri</span>
+                <h2 class="section-title">Müttefikler vs. Mihver Devletleri</h2>
+                <p class="section-intro">
+                    Savaşa katılan güçlerin seferber ettikleri askeri insan gücü ve verdikleri toplam zayiatlar.
+                </p>
+            </div>
+
+            <div class="alliances-wrapper">
+                <!-- Allies Column -->
+                <div class="alliance-box allies-box">
+                    <div class="alliance-header">
+                        <div class="alliance-title-wrap">
+                            <i class="fas fa-shield-halved"></i>
+                            <div>
+                                <h3>Müttefik Devletler (Allies)</h3>
+                                <span>Demokrasi ve Faşizm Karşıtı Blok</span>
+                            </div>
+                        </div>
+                        <span class="badge-alliance">Galip İttifak</span>
+                    </div>
+                    <div class="country-list" id="allies-country-list">
+                        <!-- Populated via script.js -->
+                    </div>
+                </div>
+
+                <!-- Axis Column -->
+                <div class="alliance-box axis-box">
+                    <div class="alliance-header">
+                        <div class="alliance-title-wrap">
+                            <i class="fas fa-skull"></i>
+                            <div>
+                                <h3>Mihver Devletleri (Axis)</h3>
+                                <span>Roma-Berlin-Tokyo Mihveri</span>
+                            </div>
+                        </div>
+                        <span class="badge-alliance badge-axis-label">Mağlup İttifak</span>
+                    </div>
+                    <div class="country-list" id="axis-country-list">
+                        <!-- Populated via script.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: Medya Arşivi (Media Archive: Photo, Audio, Documents) -->
+    <section id="medya" class="section-container bg-subtle">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-photo-film"></i> Tarihi Dokümanlar</span>
+                <h2 class="section-title">Medya Arşivi & Ses Kayıtları</h2>
+                <p class="section-intro">
+                    Dönemin tarihi fotoğrafları, liderlerin radyo konuşmaları ve savaşı bitiren resmî diplomatik antlaşmalar.
+                </p>
+            </div>
+
+            <!-- Media Tabs -->
+            <div class="media-tabs" id="media-tab-nav">
+                <button class="media-tab-btn active" data-tab="photos"><i class="fas fa-image"></i> Tarihi Fotoğraflar</button>
+                <button class="media-tab-btn" data-tab="audio"><i class="fas fa-volume-high"></i> Tarihi Ses Kayıtları</button>
+                <button class="media-tab-btn" data-tab="documents"><i class="fas fa-file-contract"></i> Antlaşmalar & Belgeler</button>
+            </div>
+
+            <!-- Media Content Panels -->
+            <div class="media-panels">
+                <!-- Photos Panel -->
+                <div class="media-tab-panel active" id="tab-photos">
+                    <div class="photos-gallery-grid" id="photos-grid">
+                        <!-- Rendered via script.js -->
+                    </div>
+                </div>
+
+                <!-- Audio Speeches Panel -->
+                <div class="media-tab-panel" id="tab-audio">
+                    <div class="audio-list" id="audio-list">
+                        <!-- Rendered via script.js -->
+                    </div>
+                </div>
+
+                <!-- Documents Panel -->
+                <div class="media-tab-panel" id="tab-documents">
+                    <div class="documents-grid" id="documents-grid">
+                        <!-- Rendered via script.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: Tematik Konular (Topics) -->
+    <section id="konular" class="section-container">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-book-bookmark"></i> Derinlemesine İnceleme</span>
+                <h2 class="section-title">Tematik Odak Konuları</h2>
+                <p class="section-intro">
+                    Savaşın sadece cephelerde değil; laboratuvarlarda, fabrikalarda ve toplumsal bellekte bıraktığı izler.
+                </p>
+            </div>
+
+            <div class="topics-grid" id="topics-container">
+                <!-- Populated via script.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 8: Kullanıcı Yorum & Katkı Sistemi (Comments) -->
+    <section id="yorumlar" class="section-container bg-subtle">
+        <div class="container">
+            <div class="section-head">
+                <span class="section-tag"><i class="fas fa-comments"></i> Topluluk Katkısı</span>
+                <h2 class="section-title">Tarihsel Tartışmalar & Katkılar</h2>
+                <p class="section-intro">
+                    Arşivlenen olaylar ve muharebeler hakkında düşüncelerinizi, kaynak önerilerinizi veya tarihi analizlerinizi paylaşın.
+                </p>
+            </div>
+
+            <div class="comments-layout">
+                <!-- Comments List -->
+                <div class="comments-feed" id="comments-feed">
+                    <!-- Populated via script.js -->
+                </div>
+
+                <!-- Add Comment Form -->
+                <div class="comment-form-box">
+                    <h3><i class="fas fa-pen-fancy"></i> Katkıda Bulun</h3>
+                    <p class="form-hint">Yorumlar moderasyon sistemimizden geçtikten sonra herkese açık olarak yayımlanır.</p>
+                    
+                    <form id="new-comment-form">
+                        <div class="form-group">
+                            <label for="comment-author">Adınız Soyadınız / Akademik Ünvan</label>
+                            <input type="text" id="comment-author" placeholder="Örn: Dr. Mehmet Yılmaz" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment-entity">İlişkili Olay veya Muharebe</label>
+                            <select id="comment-entity" required>
+                                <option value="Stalingrad Muharebesi">Stalingrad Muharebesi</option>
+                                <option value="Normandiya Çıkarması">Normandiya Çıkarması (D-Day)</option>
+                                <option value="Midway Deniz Muharebesi">Midway Muharebesi</option>
+                                <option value="Holokost ve Soykırım">Holokost ve Soykırım</option>
+                                <option value="Enigma ve Şifreleme">Enigma ve Bletchley Park</option>
+                                <option value="Hiroşima & Nagazaki">Hiroşima ve Nagazaki</option>
+                                <option value="Genel Tarihsel Değerlendirme">Genel Tarihsel Değerlendirme</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment-text">Yorumunuz / Tarihi Notunuz</label>
+                            <textarea id="comment-text" rows="4" placeholder="Tarihi kaynak, stratejik analiz veya görüşlerinizi yazın..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-paper-plane"></i> Yorumu Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Unified Detail Modal (Universal Pop-up for Events, Battles, People) -->
+    <div id="detail-modal" class="custom-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog">
+            <button class="modal-close-btn" aria-label="Kapat">&times;</button>
+            <div class="modal-body" id="detail-modal-body">
+                <!-- Dynamically filled -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Search / Spotlight Modal (Ctrl+K) -->
+    <div id="search-modal" class="custom-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog modal-dialog-search">
+            <div class="search-input-wrap">
+                <i class="fas fa-search search-icon-left"></i>
+                <input type="text" id="global-search-input" placeholder="Olay, muharebe, komutan, ülke veya yıl arayın (örn: Stalingrad, Churchill, 1944)..." autofocus>
+                <button class="modal-close-btn" aria-label="Kapat">&times;</button>
+            </div>
+            <div class="search-results-list" id="search-results-list">
+                <div class="empty-search-state">
+                    <i class="fas fa-keyboard"></i>
+                    <p>Aramak istediğiniz terimi yazın. Sonuçlar anında listelenecektir.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin CMS Simulation Modal -->
+    <div id="admin-modal" class="custom-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-dialog modal-dialog-admin">
+            <div class="admin-header">
+                <div class="admin-header-title">
+                    <i class="fas fa-sliders"></i>
+                    <div>
+                        <h3>WW2Archive Yönetim Konsolu (CMS)</h3>
+                        <span class="admin-user-tag"><i class="fas fa-user-shield"></i> Yetki: Baş Editör / Admin</span>
+                    </div>
+                </div>
+                <button class="modal-close-btn" aria-label="Kapat">&times;</button>
+            </div>
+
+            <!-- Admin Stats KPI -->
+            <div class="admin-kpi-grid">
+                <div class="kpi-card">
+                    <span class="kpi-num" id="admin-kpi-events">12</span>
+                    <span class="kpi-title">Kayıtlı Olay</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-num" id="admin-kpi-battles">6</span>
+                    <span class="kpi-title">Büyük Muharebe</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-num" id="admin-kpi-people">8</span>
+                    <span class="kpi-title">Arşivlenmiş Kişi</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-num" id="admin-kpi-comments">3</span>
+                    <span class="kpi-title">Yorum / Katkı</span>
+                </div>
+            </div>
+
+            <!-- Admin Action Tabs -->
+            <div class="admin-body-layout">
+                <!-- Add Event Form -->
+                <div class="admin-card-panel">
+                    <h4><i class="fas fa-plus-circle"></i> Yeni Tarihi Olay / Muharebe Ekle</h4>
+                    <form id="admin-add-event-form">
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label>Olay Başlığı</label>
+                                <input type="text" id="adm-title" placeholder="Örn: Guadalcanal Seferi" required>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Yıl</label>
+                                <input type="number" id="adm-year" value="1942" min="1935" max="1950" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6">
+                                <label>Cephe</label>
+                                <select id="adm-front">
+                                    <option value="avrupa">Batı / Avrupa Cephesi</option>
+                                    <option value="dogu">Doğu Cephesi</option>
+                                    <option value="pasifik">Pasifik Cephesi</option>
+                                    <option value="afrika">Kuzey Afrika Cephesi</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Kategori</label>
+                                <input type="text" id="adm-category" placeholder="Örn: Deniz Çıkarması">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Olay Özeti</label>
+                            <textarea id="adm-summary" rows="3" placeholder="Tarihsel önemini ve sonucunu kısaca özetleyin..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Veritabanına Ekle</button>
+                    </form>
+                </div>
+
+                <!-- Comment Moderation List -->
+                <div class="admin-card-panel">
+                    <h4><i class="fas fa-tasks"></i> Bekleyen Yorum Moderasyonu</h4>
+                    <div class="mod-list" id="admin-comment-mod-list">
+                        <!-- Populated via script.js -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player Toast Simulator -->
+    <div id="audio-player-toast" class="audio-toast">
+        <div class="audio-toast-content">
+            <div class="audio-pulse"><i class="fas fa-radio"></i></div>
+            <div class="audio-info">
+                <span class="audio-playing-title" id="toast-audio-title">Winston Churchill: We Shall Fight on the Beaches</span>
+                <span class="audio-playing-sub">Tarihi Arşiv Ses Kaydı (Simülasyon Oynatılıyor)</span>
+            </div>
+        </div>
+        <button id="toast-audio-close" class="toast-close">&times;</button>
+    </div>
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <div class="brand-logo">
+                    <span class="logo-shield"><i class="fas fa-shield-halved"></i></span>
+                    <div class="logo-text">
+                        <span class="logo-title">WW2<span class="highlight">ARCHIVE</span></span>
+                        <span class="logo-sub">İkinci Dünya Savaşı Ansiklopedisi</span>
+                    </div>
+                </div>
+                <p class="footer-mission">
+                    1939-1945 yılları arasında cereyan eden küresel çatışmanın tarihi bellek kayıtlarını, 
+                    objektif akademik kaynaklar ve interaktif görselleştirme araçlarıyla yeni nesillere sunan dijital ansiklopedi projesi.
+                </p>
+                <div class="github-repo-link">
+                    <a href="https://github.com/Berkay5577/ww2.git" target="_blank" class="btn btn-outline btn-sm">
+                        <i class="fab fa-github"></i> GitHub: Berkay5577/ww2
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Hızlı Gezinti</h4>
+                <ul class="footer-links">
+                    <li><a href="#harita"><i class="fas fa-chevron-right"></i> İnteraktif Harita</a></li>
+                    <li><a href="#zaman-cizelgesi"><i class="fas fa-chevron-right"></i> 1939-1945 Kronolojisi</a></li>
+                    <li><a href="#muharebeler"><i class="fas fa-chevron-right"></i> Muharebeler Kataloğu</a></li>
+                    <li><a href="#kisiler"><i class="fas fa-chevron-right"></i> Komutanlar & Liderler</a></li>
+                    <li><a href="#ulkeler"><i class="fas fa-chevron-right"></i> İttifaklar & Ülkeler</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Özel Konular</h4>
+                <ul class="footer-links">
+                    <li><a href="#konular"><i class="fas fa-chevron-right"></i> Holokost ve Soykırım</a></li>
+                    <li><a href="#konular"><i class="fas fa-chevron-right"></i> Enigma ve Şifre Kırma</a></li>
+                    <li><a href="#konular"><i class="fas fa-chevron-right"></i> Manhattan Projesi & Atom Bombası</a></li>
+                    <li><a href="#medya"><i class="fas fa-chevron-right"></i> Tarihi Ses Kayıtları</a></li>
+                    <li><a href="#yorumlar"><i class="fas fa-chevron-right"></i> Tarihçi Yorumları</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Mimari & Kaynakça</h4>
+                <p class="footer-source-note">
+                    Bu platform <code>2-dunya-savasi-site-mimarisi.md</code> dokümanında belirtilen 3 katmanlı ansiklopedi mimarisine uygun olarak geliştirilmiştir.
+                </p>
+                <div class="footer-meta">
+                    <span><i class="fas fa-shield"></i> Güvenli & Açık Kaynak</span>
+                    <span><i class="fas fa-book"></i> Akademik Arşiv</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container footer-bottom-flex">
+                <p>&copy; 2026 WW2Archive. Eğitim ve araştırma amaçlı açık tarih platformudur.</p>
+                <div class="back-to-top">
+                    <a href="#"><i class="fas fa-arrow-up"></i> Başa Dön</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Data and App Logic -->
+    <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
